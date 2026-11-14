@@ -2,6 +2,9 @@ name: Telegram Bot
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   run-bot:
@@ -9,20 +12,18 @@ jobs:
     timeout-minutes: 360
 
     steps:
-      - name: Get Bot Code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
-      - name: Install Requirements
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-      - name: Start Telegram Bot
+      - name: Run Bot
         env:
-          BOT_TOKEN: ${{ 9126917037:AAGai_0tDp_8HK4T0SpXHv7iisvursxCpJ0 }}
-        run: python main.py
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: python main.pypy
